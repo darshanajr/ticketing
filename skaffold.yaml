@@ -1,0 +1,72 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+metadata:
+  name: ticketing
+build:
+  local:
+    push: false
+  artifacts:
+    - image: darshanajr/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+    - image: darshanajr/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "**/*.js"
+    - image: darshanajr/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+    - image: darshanajr/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+    - image: darshanajr/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+    - image: darshanajr/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
+manifests:
+  rawYaml:
+    - infra/k8s/auth-depl.yaml
+    #- infra/k8s/auth-mongo-depl.yaml
+    - infra/k8s/client-depl.yaml
+    - infra/k8s/expiration-depl.yaml
+    - infra/k8s/expiration-redis-depl.yaml
+    - infra/k8s/ingress-srv.yaml
+    - infra/k8s/nats-stream-depl.yaml
+    - infra/k8s/orders-depl.yaml
+    #- infra/k8s/orders-mongo-depl.yaml
+    - infra/k8s/payments-depl.yaml
+    #- infra/k8s/payments-mongo-depl.yaml
+    - infra/k8s/tickets-depl.yaml
+    #- infra/k8s/tickets-mongo-depl.yaml
+    - infra/k8s/common-mongo-depl.yaml

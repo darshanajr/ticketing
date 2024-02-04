@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: common-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: common-mongo
+  template:
+    metadata:
+      labels:
+        app: common-mongo
+    spec:
+      containers:
+        - name: common-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: common-mongo-srv
+spec:
+  selector:
+    app: common-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
